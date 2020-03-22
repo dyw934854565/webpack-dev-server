@@ -1,13 +1,10 @@
 {
-  "name": "webpack-dev-server",
+  "name": "webpack-dev-config-server",
   "version": "3.10.3",
   "description": "Serves a webpack app. Updates the browser on changes.",
-  "bin": "bin/webpack-dev-server.js",
-  "main": "lib/Server.js",
+  "main": "lib/configServer.js",
   "files": [
-    "bin",
     "lib",
-    "ssl",
     "client"
   ],
   "engines": {
@@ -25,7 +22,7 @@
     "test:watch": "npm run test:coverage --watch",
     "test": "npm run test:coverage",
     "pretest": "npm run lint",
-    "prepare": "rimraf ./ssl/*.pem && npm run build:client",
+    "prepare": "npm run build:client",
     "build:client:default": "babel client-src/default --out-dir client --ignore \"./client-src/default/*.config.js\"",
     "build:client:clients": "babel client-src/clients --out-dir client/clients",
     "build:client:index": "webpack ./client-src/default/index.js -o client/index.bundle.js --color --config client-src/default/webpack.config.js",
@@ -37,7 +34,6 @@
   },
   "dependencies": {
     "ansi-html": "0.0.7",
-    "bonjour": "^3.5.0",
     "chokidar": "^2.1.8",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^1.6.0",
@@ -50,8 +46,8 @@
     "internal-ip": "^4.3.0",
     "ip": "^1.1.5",
     "is-absolute-url": "^3.0.3",
-    "killable": "^1.0.1",
     "loglevel": "^1.6.7",
+    "methods": "^1.1.2",
     "opn": "^5.5.0",
     "p-retry": "^3.0.1",
     "portfinder": "^1.0.25",
@@ -71,6 +67,10 @@
     "yargs": "12.0.5"
   },
   "devDependencies": {
+    "koa": "^2.11.0",
+    "mime": "^2.4.4",
+    "@koa/router": "^8.0.8",
+    "express-to-koa": "^2.0.0",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
     "@babel/plugin-transform-runtime": "^7.8.3",

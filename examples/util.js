@@ -7,6 +7,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const marked = require('marked');
 const webpack = require('webpack');
+const mime = require('mime');
 
 module.exports = {
   setup(config) {
@@ -26,9 +27,16 @@ module.exports = {
 
     const result = Object.assign(defaults, config);
     const before = function before(app) {
+      console.log('before load');
       app.get('/.assets/*', (req, res) => {
-        const filename = path.join(__dirname, '/', req.path);
-        res.sendFile(filename);
+        console.log('req.path ======>', req.path, req.url);
+        const filename = path.join(__dirname, '/', req.path || req.url);
+        if (res.sendFile) {
+          return res.sendFile(filename);
+        }
+
+        res.setHeader('Content-Type', mime.getType(path.extname(filename)));
+        return fs.createReadStream(filename).pipe(res);
       });
     };
     const renderer = new marked.Renderer();
@@ -83,7 +91,6 @@ module.exports = {
     } else {
       result.devServer.before = before;
     }
-
     const output = {
       path: path.dirname(module.parent.filename),
     };
